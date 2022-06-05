@@ -1,8 +1,5 @@
-
-ARG JAVA_MAJOR_VERSION=11
-ARG JAVA_VERSION=11.0.9.1
-ARG SCALA_VERSION=3.0.0-M3
-ARG SBT_VERSION=1.4.6
+ARG SCALA_VERSION=3.1.2
+ARG SBT_VERSION=1.6.2
 
 # -------------------------- STAGE 1 -----------------------------------------
 # download-and-extract-stage does not neet to be based on debian:buster.
@@ -19,8 +16,8 @@ ADD https://github.com/sbt/sbt/releases/download/v${SBT_VERSION}/sbt-${SBT_VERSI
 RUN tar -xzf /tmp/sbt-${SBT_VERSION}.tar.gz -C /usr/local
 
 # -------------------------- STAGE 2 -----------------------------------------
-# The "official" openjdk image is based on debian buster.
-FROM openjdk:${JAVA_VERSION}-jre-slim as scala-stage
+# Install Scala and SBT
+FROM mcr.microsoft.com/vscode/devcontainers/java:17-bullseye
 
 COPY --from=download-and-extract-stage /usr/local/scala3 /usr/local/scala3
 ENV SCALA_HOME=/usr/local/scala3
